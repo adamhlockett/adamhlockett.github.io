@@ -1,5 +1,4 @@
-# Games Programmer
-## Projects
+# Projects
 ### Second Chance
 srgjhsfdijfs
 fdgdfgertgfdvfdg
