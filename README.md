@@ -1,11 +1,10 @@
 # Games Programmer
-
-### Education
-BSc (Hons) Games Technology
-
-### Work Experience
-Tuvaria
-
-### Projects
--Second Chance
--Dissertation Project
+## Projects
+### Second Chance
+srgjhsfdijfs
+fdgdfgertgfdvfdg
+fpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+#### Dissertation Project
+l kdsfmkrejireuhvjrkn rijfoisncjksncelkam ijsjrvoic nsoicnsro
+rskkjfvsovmrsokmvosrmvrs 
+rsgsrgd
