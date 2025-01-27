@@ -26,25 +26,50 @@
 
         <h1 id="setup">Boss Fight</h1>
 
-        <p><code>Boss Fight</code> is my dissertation project. I'm using Dynamic Difficulty Adjustment (DDA) 
+        <p>
+            <code>Boss Fight</code> is my dissertation project. I'm using Dynamic Difficulty Adjustment (DDA) 
             on a boss fight encounter to establish the worth of such techniques. The two types of DDA I'm using are
             the Probabilistic Method (PM) and Monte Carlo Tree Search (MCTS). I will establish 'worth' by assessing how these methods
-            compare against a control mode in terms of technical viability and player engagement/ enjoyment (as assessed through testing).
+            compare against a control mode in terms of technical viability and player engagement/ enjoyment.
         </p>
-        <p>Check out my repository 
-            <a href="https://github.com/adamhlockett/BossFight">here</a> and read through my poster (below) that I've created to showcase my progress so far (as of January 2025).
+        
+        <p>
+            Check out my repository <a href="https://github.com/adamhlockett/BossFight">here</a> and read through my poster (below) that I've created to showcase my progress so far (as of January 2025).
         <p>
             <img src="images/Dissertation_Poster_Smaller.png" alt="Poster">
         </p>
-        <p>Dynamic Difficulty Adjustment (DDA) is a method of adjusting the difficulty of a game to suit the specific player by changing during play.
+        
+        <p>
+            Dynamic Difficulty Adjustment (DDA) is a method of adjusting the difficulty of a game to suit the specific player by changing during play.
             I've created a <code>difficulty value</code> that can be dynamically changed to alter the difficulty of the boss enemy. This value affects enemy speed and damage, 
             frequency, accuracy and size of attacks, length of telegraphing (warning) before attacks, likelihood of attacks, and projectile patterns.
         </p>
-        <p>Click <a href="https://www.youtube.com/watch?v=jC56_dSydNA">here</a> to watch a video showcase (with voiceover) of my project so far, or watch some gameplay (no voiceover) below:
+        
+        <p>
+            Click <a href="https://www.youtube.com/watch?v=jC56_dSydNA">here</a> to watch a video showcase (with voiceover) of my project so far, or watch some gameplay (no voiceover) below:
         </p>
+        
         <p>
             <video src="https://adamhlockett.github.io/images/January_Gameplay_Shorter.mp4" controls="controls" muted="muted" class="d-block rounded-bottom-2 border-top width-fit" style="max-height:640px; min-height: 200px" crossorigin="anonymous">
             </video>
+        </p>
+
+        <p>
+            The Probabilistic Method (PM) establishes probability using <code>progression trajectories</code> <a href="https://doi.org/10.1145/3041021.3054170">(Xue et al. 2017)</a> which are essentially ways of 
+            measuring progression. My project uses trajectories such as: how many times the player has lost or reset, the health and accuracy of both player and enemy, and elapsed play time. Using these trajectories,
+            the chance of the player losing is calculated in real time and applied to inversely adjust the difficulty.
+        </p>
+
+        <p>
+            Monte Carlo Tree Search (MCTS) is an algorithm that finds the optimal action by investigating random actions and then iteratively building a <code>search tree</code> with each node being an action. Instead of building
+            the whole tree, MCTS uses a simulation of what would happen if a particular set of actions was taken <a href="https://doi.org/10.1109/CIG.2017.8080415">(Demediuk et al. 2017)</a>. The algorithm then chooses the next action to achieve the optimal outcome. My project uses 'actions' that
+            represent various changes to the difficulty of the enemy. The outcome that most fits the current difficulty is used.
+        </p>
+
+        <p>
+            The purpose of my technical implementation and research inquiry is to understand whether these approaches are technically viable and effective in increasing player engagement and enjoyment when
+            used to dynamically adjust difficulty. Player testing will be carried out to establish the differences in player experience between the two approaches, as well as a 'control' mode that features
+            no dynamic changes to difficulty.
         </p>
     </div>
 
