@@ -24,7 +24,7 @@
 
     <div class="column">
 
-        <h1 id="setup">Boss Fight</h1>
+        <h1 id="title">Boss Fight</h1>
 
         <p>
             <code>Boss Fight</code> is my dissertation project. I'm using Dynamic Difficulty Adjustment (DDA) 
@@ -38,6 +38,8 @@
         <p>
             <img src="images/Dissertation_Poster_Smaller.png" alt="Poster">
         </p>
+
+        <h4> Dynamic Difficulty Adjustment </h4>
         
         <p>
             Dynamic Difficulty Adjustment (DDA) is a method of adjusting the difficulty of a game to suit the specific player by changing during play.
@@ -54,6 +56,7 @@
             </video>
         </p>
 
+        <h4> The Probabilistic Method </h4>
         <p>
             The Probabilistic Method (PM) establishes probability using <code>progression trajectories</code> <a href="https://doi.org/10.1145/3041021.3054170">(Xue et al. 2017)</a> which are essentially ways of 
             measuring progression. My project uses trajectories such as: how many times the player has lost or reset, the health and accuracy of both player and enemy, and elapsed play time. Using these trajectories,
@@ -194,6 +197,8 @@
 }</pre>
         </p>
 
+        <h4> Monte Carlo Tree Search </h4>
+        
         <p>
             Monte Carlo Tree Search (MCTS) is an algorithm that finds the optimal action by investigating random actions and then iteratively building a <code>search tree</code> with each node being an action. Instead of building
             the whole tree, MCTS uses a simulation of what would happen if a particular set of actions was taken <a href="https://doi.org/10.1109/CIG.2017.8080415">(Demediuk et al. 2017)</a>. The algorithm then chooses the next action to achieve the optimal outcome. My project uses 'actions' that
@@ -201,18 +206,39 @@
         </p>
 
         <p>
-            See a diagram of how I apply MCTS to the boss fight scenario below:
+            See a diagram of how I will apply MCTS (with a depth of 3) to my boss fight scenario below:
         </p>
 
         <p>
             <img src="images/MCTS_diagram.png" alt="MCTS Diagram">
         </p>
 
+        <h4> Aim </h4>
+        
         <p>
             The purpose of my technical implementation and research inquiry is to understand whether these approaches are technically viable and effective in increasing player engagement and enjoyment when
             used to dynamically adjust difficulty. Player testing will be carried out to establish the differences in player experience between the two approaches, as well as a 'control' mode that features
             no dynamic changes to difficulty.
         </p>
+
+        <h4> Project Management </h4>
+        
+        <p>
+            I've been using GitKraken Desktop for version control and working across devices (<a href="https://github.com/adamhlockett/BossFight">repository</a>). I ensure that I commit often and keep my
+            commit messages clear and concise. This allows me to quickly and easily revert changes and diagnose bugs by understanding what I have changed and when. Additionally, I've been using feature
+            branches, specifically when importing packages such as UnityHFSM (since removed) and the Universal Render Pipeline as well as for implementing the adjustment methods. I store all my diagrams,
+            notes and references on the cloud as to access them across devices, this is helpful as I often refer to timestamps on such things. At any given point during development, I have made sure to 
+            outline what I need to do next, so that I am not wasting time on this decision after completing a task. Lastly, I've prepared preliminary notes before each meeting with my dissertation supervisor.
+        </p>
+        
+        <p>
+            See my current project plan (updated January 2025):
+        </p>
+        
+        <p>
+            <img src="images/updated_project_plan.png" alt="Project Plan">
+        </p>
+        
     </div>
 
 </body>
