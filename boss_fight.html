@@ -59,6 +59,9 @@
             measuring progression. My project uses trajectories such as: how many times the player has lost or reset, the health and accuracy of both player and enemy, and elapsed play time. Using these trajectories,
             the chance of the player losing is calculated in real time and applied to inversely adjust the difficulty.
         </p>
+        <p> 
+            Below is my current algorithm for the Probabilistic Method as applied to the boss fight scenario. See my comments in the code for explanation.
+        </p>
 <p>
         <pre style="font-family:Cascadia Mono;font-size:13px;color:gainsboro;background:#1e1e1e;"><span style="color:#569cd6;">public</span>&nbsp;<span style="color:#569cd6;">class</span>&nbsp;<span style="color:#4ec9b0;">ProbabilisticMethod</span>&nbsp;:&nbsp;<span style="color:#4ec9b0;">DynamicAdjustmentMethod</span>
 {
