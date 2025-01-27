@@ -60,134 +60,135 @@
             the chance of the player losing is calculated in real time and applied to inversely adjust the difficulty.
         </p>
 <p>
-        <pre style="font-family:Cascadia Mono;font-size:13px;color:gainsboro;background:#1e1e1e;"><span style="color:#4ec9b0;">PlayDataSingleton</span>&nbsp;p&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#4ec9b0;">PlayDataSingleton</span><span style="color:#b4b4b4;">.</span>instance;
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//float&nbsp;checkEvery,&nbsp;checkEverySeconds&nbsp;=&nbsp;5f;</span>
+        <pre style="font-family:Cascadia Mono;font-size:13px;color:gainsboro;background:#1e1e1e;"><span style="color:#569cd6;">public</span>&nbsp;<span style="color:#569cd6;">class</span>&nbsp;<span style="color:#4ec9b0;">ProbabilisticMethod</span>&nbsp;:&nbsp;<span style="color:#4ec9b0;">DynamicAdjustmentMethod</span>
+{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ec9b0;">PlayDataSingleton</span>&nbsp;p&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#4ec9b0;">PlayDataSingleton</span><span style="color:#b4b4b4;">.</span>instance;&nbsp;<span style="color:#57a64a;">//Contains&nbsp;all&nbsp;variables&nbsp;to&nbsp;be&nbsp;adjusted.</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">float</span>&nbsp;maxDifficulty&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">1.8f</span>,&nbsp;minDifficulty&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">0.6f</span>,&nbsp;playTimeWeighting&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">0.5f</span>;
  
  
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#569cd6;">Start</span>()
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">Start</span>()
 &nbsp;&nbsp;&nbsp;&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methodName&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#d69d85;">&quot;Probabilistic&quot;</span>;
  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>shortestPlayTime&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">15f</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>shortestPlayTime&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">15f</span>;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>longestPlayTime&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">25f</span>;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//checkEvery&nbsp;=&nbsp;checkEverySeconds;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Default&nbsp;values&nbsp;used&nbsp;before&nbsp;enough&nbsp;playtime&nbsp;data&nbsp;is&nbsp;gathered.</span>
 &nbsp;&nbsp;&nbsp;&nbsp;}
  
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">public</span>&nbsp;<span style="color:#569cd6;">override</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">CheckForAdjustments</span>()
+ 
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">public</span>&nbsp;<span style="color:#569cd6;">override</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">CheckForAdjustments</span>()&nbsp;<span style="color:#57a64a;">//Called&nbsp;by&nbsp;EnemyFSM&nbsp;when&nbsp;switching&nbsp;states.</span>
 &nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//checkEvery&nbsp;-=&nbsp;Time.deltaTime;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//if&nbsp;(checkEvery&nbsp;&gt;&nbsp;0)&nbsp;{&nbsp;return;&nbsp;}</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//else&nbsp;checkEvery&nbsp;=&nbsp;checkEverySeconds;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Only&nbsp;adjust&nbsp;difficulty&nbsp;if&nbsp;player&nbsp;or&nbsp;enemy&nbsp;has&nbsp;taken&nbsp;damage.</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>enemyHealth&nbsp;<span style="color:#b4b4b4;">==</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyMaxHealth&nbsp;<span style="color:#b4b4b4;">&amp;&amp;</span>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>playerHealth&nbsp;<span style="color:#b4b4b4;">==</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerMaxHealth)&nbsp;p<span style="color:#b4b4b4;">.</span>difficulty&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">1</span>;
  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>enemyHealth&nbsp;<span style="color:#b4b4b4;">==</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyMaxHealth&nbsp;<span style="color:#b4b4b4;">&amp;&amp;</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerHealth&nbsp;<span style="color:#b4b4b4;">==</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerMaxHealth)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>difficulty&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">1</span>;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">CalculateTrajectories</span>();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>&nbsp;<span style="color:#dcdcaa;">CalculateTrajectories</span>();
 &nbsp;&nbsp;&nbsp;&nbsp;}
  
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">CalculateTrajectories</span>()
+ 
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">CalculateTrajectories</span>()&nbsp;<span style="color:#57a64a;">//Calculate&nbsp;trajectories&nbsp;needed&nbsp;to&nbsp;establish&nbsp;loss&nbsp;chance.</span>
 &nbsp;&nbsp;&nbsp;&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>healthGap&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>enemyHealth&nbsp;<span style="color:#b4b4b4;">/</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyMaxHealth)&nbsp;<span style="color:#b4b4b4;">-</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>playerHealth&nbsp;<span style="color:#b4b4b4;">/</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerMaxHealth);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Gap&nbsp;in&nbsp;health&nbsp;between&nbsp;player&nbsp;and&nbsp;enemy.</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>playerAccuracy&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerHits&nbsp;<span style="color:#b4b4b4;">/</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerAttacks;
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>enemyAccuracy&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyHits&nbsp;<span style="color:#b4b4b4;">/</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyAttacks;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//How&nbsp;many&nbsp;hits&nbsp;player&nbsp;and&nbsp;enemy&nbsp;have&nbsp;landed&nbsp;out&nbsp;of&nbsp;how&nbsp;many&nbsp;attacks&nbsp;they&#39;ve&nbsp;done.</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>avgPlayTime&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>totalPlayTime&nbsp;<span style="color:#b4b4b4;">/</span>&nbsp;p<span style="color:#b4b4b4;">.</span>attempts;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Average&nbsp;elapsed&nbsp;play&nbsp;time&nbsp;per&nbsp;attempt.</span>
  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">CalculateLossChance</span>();
-&nbsp;&nbsp;&nbsp;&nbsp;}
- 
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">CalculateLossChance</span>()
-&nbsp;&nbsp;&nbsp;&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">CalculatePlayTime</span>();
 &nbsp;&nbsp;&nbsp;&nbsp;}
  
+ 
 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">CalculatePlayTime</span>()
 &nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>playTime&nbsp;<span style="color:#b4b4b4;">&lt;</span>&nbsp;p<span style="color:#b4b4b4;">.</span>shortestPlayTime)&nbsp;{&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">0</span>;&nbsp;<span style="color:#57a64a;">/*Debug.Log(&quot;apply&nbsp;min&nbsp;playtime&nbsp;loss&nbsp;chance&quot;);*/</span>&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>playTime&nbsp;<span style="color:#b4b4b4;">&lt;</span>&nbsp;p<span style="color:#b4b4b4;">.</span>shortestPlayTime)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">0</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">/*p.pr_loss&nbsp;is&nbsp;our&nbsp;loss&nbsp;chance.&nbsp;If&nbsp;the&nbsp;player&nbsp;has&nbsp;not&nbsp;yet&nbsp;surpassed&nbsp;their&nbsp;shortest
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elapsed&nbsp;playtime,&nbsp;it&nbsp;is&nbsp;not&nbsp;regarded&nbsp;as&nbsp;possible&nbsp;for&nbsp;them&nbsp;to&nbsp;lose.*/</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>playTime&nbsp;<span style="color:#b4b4b4;">&gt;=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>shortestPlayTime&nbsp;<span style="color:#b4b4b4;">&amp;&amp;</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playTime&nbsp;<span style="color:#b4b4b4;">&lt;=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>longestPlayTime)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">float</span>&nbsp;<span style="color:#9cdcfe;">playTimeRange</span>&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>longestPlayTime&nbsp;<span style="color:#b4b4b4;">-</span>&nbsp;p<span style="color:#b4b4b4;">.</span>shortestPlayTime;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">float</span>&nbsp;<span style="color:#9cdcfe;">playTimeGap</span>&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playTime&nbsp;<span style="color:#b4b4b4;">-</span>&nbsp;p<span style="color:#b4b4b4;">.</span>shortestPlayTime;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;(<span style="color:#9cdcfe;">playTimeGap</span>&nbsp;<span style="color:#b4b4b4;">/</span>&nbsp;<span style="color:#9cdcfe;">playTimeRange</span>)&nbsp;<span style="color:#b4b4b4;">*</span>&nbsp;playTimeWeighting;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Debug.Log(&quot;apply&nbsp;playtime&nbsp;loss&nbsp;chance&nbsp;calculation&quot;);</span>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">/*Calculates&nbsp;the&nbsp;loss&nbsp;chance&nbsp;based&nbsp;on&nbsp;how&nbsp;far&nbsp;through&nbsp;the&nbsp;play&nbsp;time&nbsp;range&nbsp;the&nbsp;current
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elapsed&nbsp;playtime&nbsp;is.&nbsp;This&nbsp;calculation&nbsp;is&nbsp;given&nbsp;less&nbsp;weighting&nbsp;as&nbsp;it&nbsp;was&nbsp;found&nbsp;through&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;testing&nbsp;that&nbsp;it&nbsp;strongly&nbsp;dictated&nbsp;the&nbsp;loss&nbsp;chance&nbsp;far&nbsp;more&nbsp;than&nbsp;the&nbsp;other&nbsp;calculations.*/</span>
  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>playTime&nbsp;<span style="color:#b4b4b4;">&gt;</span>&nbsp;p<span style="color:#b4b4b4;">.</span>longestPlayTime)&nbsp;{&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;playTimeWeighting;&nbsp;<span style="color:#57a64a;">/*Debug.Log(&quot;apply&nbsp;max&nbsp;playtime&nbsp;loss&nbsp;chance&quot;);*/</span>&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Debug.Log(p.pr_loss&nbsp;+&nbsp;&quot;&nbsp;playtime&nbsp;loss&nbsp;calculation&quot;);</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>playTime&nbsp;<span style="color:#b4b4b4;">&gt;</span>&nbsp;p<span style="color:#b4b4b4;">.</span>longestPlayTime)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;playTimeWeighting;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">/*If&nbsp;the&nbsp;player&nbsp;has&nbsp;surpassed&nbsp;their&nbsp;longest&nbsp;elapsed&nbsp;playtime,&nbsp;the&nbsp;loss&nbsp;chance&nbsp;is&nbsp;maximum.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;calculation&nbsp;is&nbsp;laso&nbsp;given&nbsp;less&nbsp;weighting&nbsp;as&nbsp;it&nbsp;was&nbsp;found&nbsp;through&nbsp;testing&nbsp;that&nbsp;it&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strongly&nbsp;dictated&nbsp;the&nbsp;loss&nbsp;chance&nbsp;far&nbsp;more&nbsp;than&nbsp;the&nbsp;other&nbsp;calculations.*/</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">CalculateHealthGap</span>();
 &nbsp;&nbsp;&nbsp;&nbsp;}
  
+ 
 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">CalculateHealthGap</span>()
 &nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Debug.Log(p.pr_loss&nbsp;+&nbsp;&quot;before&nbsp;health&nbsp;gap&nbsp;loss&nbsp;calculation&quot;);</span>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">+=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>healthGap;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Debug.Log(p.healthGap&nbsp;+&nbsp;&quot;&nbsp;healthgap&quot;);</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Debug.Log(p.pr_loss&nbsp;+&nbsp;&quot;&nbsp;after&nbsp;healthgap&nbsp;loss&nbsp;calculation&quot;);</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Adds&nbsp;health&nbsp;gap&nbsp;between&nbsp;player&nbsp;and&nbsp;enemy&nbsp;to&nbsp;the&nbsp;loss&nbsp;chance.</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">&lt;</span>&nbsp;<span style="color:#b5cea8;">0</span>)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">0</span>;
+ 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">&gt;</span>&nbsp;<span style="color:#b5cea8;">1</span>)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">1</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">/*Apply&nbsp;bounds&nbsp;here&nbsp;to&nbsp;prevent&nbsp;skewing&nbsp;the&nbsp;next&nbsp;calculation&nbsp;if&nbsp;value&nbsp;is&nbsp;over&nbsp;1&nbsp;or&nbsp;below&nbsp;0.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;is&nbsp;necessary&nbsp;here&nbsp;as&nbsp;it&nbsp;is&nbsp;possible&nbsp;for&nbsp;the&nbsp;value&nbsp;to&nbsp;exceed&nbsp;its&nbsp;bounds&nbsp;at&nbsp;this&nbsp;point.*/</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">CalculateAccuracies</span>();
 &nbsp;&nbsp;&nbsp;&nbsp;}
  
+ 
 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">CalculateAccuracies</span>()
 &nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>playerHealth&nbsp;<span style="color:#b4b4b4;">&lt;=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyDamage)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">+=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyAccuracy;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Debug.Log(&quot;apply&nbsp;enemy&nbsp;accuracy&quot;);</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>playerHealth&nbsp;<span style="color:#b4b4b4;">&lt;=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyDamage)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">+=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>enemyAccuracy;&nbsp;
  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>enemyHealth&nbsp;<span style="color:#b4b4b4;">&lt;=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerDamage)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">-=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerAccuracy;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Debug.Log(&quot;apply&nbsp;player&nbsp;accuracy&quot;);</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Debug.Log(p.pr_loss&nbsp;+&nbsp;&quot;&nbsp;accuracies&nbsp;loss&nbsp;calculation&quot;);</span>
- 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">&lt;</span>&nbsp;<span style="color:#b5cea8;">0</span>)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">0</span>;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">&gt;</span>&nbsp;<span style="color:#b5cea8;">1</span>)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">1</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>enemyHealth&nbsp;<span style="color:#b4b4b4;">&lt;=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerDamage)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">-=</span>&nbsp;p<span style="color:#b4b4b4;">.</span>playerAccuracy;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">/*If&nbsp;player&nbsp;or&nbsp;enemy&nbsp;are&nbsp;able&nbsp;to&nbsp;lose&nbsp;within&nbsp;one&nbsp;hit,&nbsp;apply&nbsp;the&nbsp;accuracy&nbsp;of&nbsp;their&nbsp;opponent
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;the&nbsp;loss&nbsp;chance.*/</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">ApplyBoundsToLossChance</span>();
 &nbsp;&nbsp;&nbsp;&nbsp;}
  
+ 
 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">ApplyBoundsToLossChance</span>()
 &nbsp;&nbsp;&nbsp;&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">&lt;</span>&nbsp;<span style="color:#b5cea8;">0</span>)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">0</span>;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">&gt;</span>&nbsp;<span style="color:#b5cea8;">1</span>)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">1</span>;&nbsp;<span style="color:#57a64a;">//&nbsp;apply&nbsp;bounds</span>
+ 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d8a0df;">else</span>&nbsp;<span style="color:#d8a0df;">if</span>&nbsp;(p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">&gt;</span>&nbsp;<span style="color:#b5cea8;">1</span>)&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#b5cea8;">1</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Apply&nbsp;bounds&nbsp;here&nbsp;to&nbsp;prevent&nbsp;skewing&nbsp;the&nbsp;final&nbsp;calculation&nbsp;if&nbsp;value&nbsp;is&nbsp;over&nbsp;1&nbsp;or&nbsp;below&nbsp;0.</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">AdjustDifficulty</span>();
 &nbsp;&nbsp;&nbsp;&nbsp;}
  
+ 
 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">public</span>&nbsp;<span style="color:#569cd6;">override</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">AdjustDifficulty</span>()
 &nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//if&nbsp;(p.pr_loss&nbsp;&lt;&nbsp;0)&nbsp;p.pr_loss&nbsp;=&nbsp;0;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//else&nbsp;if&nbsp;(p.pr_loss&nbsp;&gt;&nbsp;1)&nbsp;p.pr_loss&nbsp;=&nbsp;1;&nbsp;//&nbsp;apply&nbsp;bounds</span>
- 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//float&nbsp;difficulty&nbsp;=&nbsp;2&nbsp;-&nbsp;(p.pr_loss&nbsp;*&nbsp;2);&nbsp;//&nbsp;difficulty&nbsp;is&nbsp;from&nbsp;0-2&nbsp;easy&nbsp;to&nbsp;hard,&nbsp;loss&nbsp;chance&nbsp;is&nbsp;0-1&nbsp;win&nbsp;to&nbsp;loss</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//if&nbsp;(difficulty&nbsp;&lt;&nbsp;0.6)&nbsp;difficulty&nbsp;=&nbsp;0.6f;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//else&nbsp;if&nbsp;(difficulty&nbsp;&gt;&nbsp;1.4)&nbsp;difficulty&nbsp;=&nbsp;1.4f;&nbsp;//&nbsp;apply&nbsp;bounds</span>
- 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">float</span>&nbsp;<span style="color:#9cdcfe;">difficulty</span>&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;((<span style="color:#b5cea8;">1</span>&nbsp;<span style="color:#b4b4b4;">-</span>&nbsp;p<span style="color:#b4b4b4;">.</span>pr_loss)&nbsp;<span style="color:#b4b4b4;">*</span>&nbsp;(maxDifficulty&nbsp;<span style="color:#b4b4b4;">-</span>&nbsp;minDifficulty))&nbsp;<span style="color:#b4b4b4;">+</span>&nbsp;minDifficulty;
- 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//if&nbsp;(difficulty&nbsp;&lt;=&nbsp;0)&nbsp;difficulty&nbsp;=&nbsp;0.1f;</span>
- 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p<span style="color:#b4b4b4;">.</span>difficulty&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#9cdcfe;">difficulty</span>;
- 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ec9b0;">Debug</span><span style="color:#b4b4b4;">.</span><span style="color:#dcdcaa;">Log</span>(p<span style="color:#b4b4b4;">.</span>difficulty&nbsp;<span style="color:#b4b4b4;">+</span>&nbsp;<span style="color:#d69d85;">&quot;&nbsp;difficulty&quot;</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">/*Inversely&nbsp;apply&nbsp;the&nbsp;loss&nbsp;probability&nbsp;within&nbsp;a&nbsp;range&nbsp;(between&nbsp;maxDifficulty&nbsp;and&nbsp;minDifficulty)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;the&nbsp;difficulty&nbsp;value.*/</span>
  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">ChangeStaffColour</span>(p<span style="color:#b4b4b4;">.</span>pr_loss);
-&nbsp;&nbsp;&nbsp;&nbsp;}</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">/*Aesthetic&nbsp;change&nbsp;for&nbsp;testing,&nbsp;displays&nbsp;difficulty&nbsp;from&nbsp;green&nbsp;(easiest)&nbsp;to&nbsp;red&nbsp;(hardest)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on&nbsp;the&nbsp;enemy&#39;s&nbsp;weapon.&nbsp;The&nbsp;lighting&nbsp;map&nbsp;is&nbsp;applied&nbsp;as&nbsp;a&nbsp;secondary&nbsp;texture&nbsp;on&nbsp;the&nbsp;enemy&nbsp;sprite
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;acts&nbsp;as&nbsp;an&nbsp;emission&nbsp;map,&nbsp;which&nbsp;is&nbsp;used&nbsp;by&nbsp;the&nbsp;custom&nbsp;material&nbsp;to&nbsp;give&nbsp;a&nbsp;glow&nbsp;effect&nbsp;to
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;desired&nbsp;areas&nbsp;of&nbsp;the&nbsp;sprite.*/</span>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+ 
+ 
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">private</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:#dcdcaa;">ChangeStaffColour</span>(<span style="color:#569cd6;">float</span>&nbsp;<span style="color:#9cdcfe;">d</span>)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enemyMat<span style="color:#b4b4b4;">.</span>color&nbsp;<span style="color:#b4b4b4;">=</span>&nbsp;<span style="color:#569cd6;">new</span>&nbsp;<span style="color:#86c691;">Color</span>(<span style="color:#b5cea8;">255</span>&nbsp;<span style="color:#b4b4b4;">-</span>&nbsp;(<span style="color:#9cdcfe;">d</span>&nbsp;<span style="color:#b4b4b4;">*</span>&nbsp;<span style="color:#b5cea8;">255</span>),&nbsp;<span style="color:#9cdcfe;">d</span>&nbsp;<span style="color:#b4b4b4;">*</span>&nbsp;<span style="color:#b5cea8;">255</span>,&nbsp;<span style="color:#b5cea8;">0</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#57a64a;">//Scales&nbsp;a&nbsp;colour&nbsp;from&nbsp;green&nbsp;(0,255,0)&nbsp;to&nbsp;red&nbsp;(255,0,0)&nbsp;with&nbsp;the&nbsp;difficulty&nbsp;value.</span>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}</pre>
         </p>
 
         <p>
